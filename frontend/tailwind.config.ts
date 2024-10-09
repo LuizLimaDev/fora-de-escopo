@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         linx: {
-          purple: "var(--linx--color-purple)",
+          purple: "var(--linx-color-purple)",
           orange: "var(--linx-color-orange)",
           white: "var(--linx-color-white)",
           "dark-gray": "var(--linx-color-dark-gray)",

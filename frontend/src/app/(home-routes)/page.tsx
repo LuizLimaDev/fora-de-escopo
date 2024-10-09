@@ -44,12 +44,19 @@ export default function HomePage() {
             height={108}
             className="mb-10"
           />
-          <div className="w-[631px] h-[728px] bg-linx-white rounded-3xl flex-col-center px-9">
-            <h3 className="text-linx-orange font-dosis self-start font-semibold text-[20px]">
+          <div className="w-[631px] h-[728px] bg-linx-white rounded-3xl flex flex-col py-14 px-9">
+            <h3 className="text-linx-orange font-dosis font-semibold text-[20px]">
               Registre o seu chamado:
             </h3>
 
-            <div></div>
+            <div className="my-8">
+              <label className="text-linx-purple">Nome completo</label>
+              <input
+                type="text"
+                placeholder="Seu nome"
+                className="border-b-2 border-linx-purple w-full"
+              />
+            </div>
 
             <button className="w-[561px] h-14 bg-linx-orange rounded-[50px] font-dosis font-bold text-lg">
               Registrar chamado
