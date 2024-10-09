@@ -20,7 +20,6 @@ const tpSchema = new mongoose.Schema(
       aa: { type: Boolean },
       shopClosed: { type: Boolean },
       numberOfPDV: { type: Number },
-      numberOfPDV: { type: Number },
       receipt: { type: String },
       printer: { type: String },
       networkPrinter: { type: Boolean },

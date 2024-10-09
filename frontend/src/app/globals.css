@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --linx-color-purple: #411e5a;
+  --linx-color-orange: #f67b21;
+  --linx-color-white: #fefefe;
+  --linx-color-dark-gray: #404040;
+
+  background-color: var(--linx-color-purple);
+  font-family: "Roboto", sans-serif;
+  color: var(--linx-color-white);
+}
+
+@layer components {
+  .linx-title {
+    @apply font-dosis font-bold text-[52px];
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+}
