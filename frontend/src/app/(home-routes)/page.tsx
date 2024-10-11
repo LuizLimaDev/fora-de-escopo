@@ -1,17 +1,18 @@
+import ClientForm from "@/components/ClientForm/ClientForm";
 import IconTextDescription from "@/components/IconTextDescription/IconTextDescription";
 import Image from "next/image";
 
 export default function HomePage() {
   return (
-    <main className="w-screnn h-screen p-10 flex items-center justify-center">
-      <div className="flex items-center gap-14">
-        <div className="w-[662px]">
-          <div className="mb-10">
-            <h1 className="linx-title">Linx Degust</h1>
-            <h1 className="linx-title">Serviço fora de escopo</h1>
+    <main>
+      <div className="p-3">
+        <div className="w-full">
+          <div className="linx-title text-center mb-12">
+            <h1>Linx Degust</h1>
+            <h1>Serviço fora de escopo</h1>
           </div>
 
-          <p className="mb-10 text-2xl">
+          <p className="mb-12 text-center">
             Toda e qualquer reinstalação de produtos Linx é considerado um
             “Serviço fora de escopo.
           </p>
@@ -36,31 +37,24 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="flex-col-center">
+        <div className="w-full flex-col-center">
           <Image
             src="/linx-logo.svg"
             alt="logo linx"
             width={185}
             height={108}
-            className="mb-10"
+            className="mb-12"
           />
-          <div className="w-[631px] h-[728px] bg-linx-white rounded-3xl flex flex-col py-14 px-9">
-            <h3 className="text-linx-orange font-dosis font-semibold text-[20px]">
+          <div className="w-full flex flex-col bg-linx-white rounded-3xl p-4">
+            <h3 className="text-linx-orange text-center font-dosis text-xl font-bold mt-4 mb-12">
               Registre o seu chamado:
             </h3>
 
-            <div className="my-8">
-              <label className="text-linx-purple">Nome completo</label>
-              <input
-                type="text"
-                placeholder="Seu nome"
-                className="border-b-2 border-linx-purple w-full"
-              />
+            <div className="flex flex-col font-bold">
+              <ClientForm />
             </div>
 
-            <button className="w-[561px] h-14 bg-linx-orange rounded-[50px] font-dosis font-bold text-lg">
-              Registrar chamado
-            </button>
+            <button>Registrar chamado</button>
           </div>
         </div>
       </div>

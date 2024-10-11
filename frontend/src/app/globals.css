@@ -15,10 +15,21 @@
 
 @layer components {
   .linx-title {
-    @apply font-dosis font-bold text-[52px];
+    @apply font-dosis font-bold text-5xl;
   }
 
   .flex-col-center {
     @apply flex flex-col items-center justify-center;
+  }
+
+  .container-input {
+    @apply mb-3 flex flex-col;
+  }
+
+  .input-title {
+    @apply text-linx-purple mb-2;
+  }
+  .input {
+    @apply border-b-2 border-linx-purple font-normal;
   }
 }
