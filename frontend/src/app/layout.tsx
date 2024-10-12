@@ -1,3 +1,4 @@
+import { TpProvider } from "@/context/tpContext";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import localFont from "next/font/local";
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${dosis.variable} ${roboto.variable} antialiased`}>
-        {children}
+        <TpProvider>{children}</TpProvider>
       </body>
     </html>
   );
