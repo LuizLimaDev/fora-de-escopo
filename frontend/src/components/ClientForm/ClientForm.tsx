@@ -1,6 +1,7 @@
 "use client";
 
 import tpContext from "@/context/tpContext";
+import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import InputMask from "react-input-mask";
 
@@ -11,8 +12,8 @@ const ClientForm = () => {
   const [role, setRole] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [error, setError] = useState<string>("");
-
   const context = useContext(tpContext);
+  const router = useRouter();
 
   if (!context) {
     throw new Error("useContext must be used within a TpProvider");
@@ -41,7 +42,9 @@ const ClientForm = () => {
     };
 
     setClientdata(clientData);
+
     //TODO - redirect para pagina de questionario de configuração
+    router.push("/service");
 
     console.log("form enviado: ", clientData);
   }
