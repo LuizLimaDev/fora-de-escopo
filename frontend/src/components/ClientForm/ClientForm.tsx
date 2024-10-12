@@ -11,7 +11,14 @@ const ClientForm = () => {
   const [role, setRole] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const { setClientdata } = useContext(tpContext);
+
+  const context = useContext(tpContext);
+
+  if (!context) {
+    throw new Error("useContext must be used within a TpProvider");
+  }
+
+  const { setClientdata } = context;
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,12 +35,11 @@ const ClientForm = () => {
     const clientData = {
       name,
       email,
-      cleanedCpf,
+      cpf: cleanedCpf,
       role,
-      cleanedPhone,
+      phone: cleanedPhone,
     };
 
-    //TODO - setar o objeto do cliente no estado global para enviar tudo junto (conferir objeto da collection)
     setClientdata(clientData);
     //TODO - redirect para pagina de questionario de configuração
 
