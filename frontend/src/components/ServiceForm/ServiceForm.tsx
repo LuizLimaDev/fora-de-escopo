@@ -1,7 +1,7 @@
 "use client";
 
 import Input from "@/components/Input/Input";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import InputMask from "react-input-mask";
 import servicesPrices from "../../utils/servicesPrices.json";
 import InputRadio from "../InputRadio/InputRadio";
@@ -11,12 +11,59 @@ const ServiceForm = () => {
   const [company, setCompany] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
   const [adress, setAdress] = useState<string>("");
+  const [products, setProducts] = useState<
+    {
+      name: string;
+      quantity: number;
+      value: string | undefined;
+    }[]
+  >([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [fiscalType, setFiscalType] = useState<string>("");
+
+  function handleChangeProducts(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.name;
+    const checked = e.target.checked;
+    const price = servicesPrices.products.find(
+      (item) => item.name == value
+    )?.price;
+
+    if (!checked) {
+      setProducts((prev) => prev.filter((product) => product.name !== value));
+      return;
+    }
+
+    const updateProduct = {
+      name: value,
+      quantity: 0,
+      value: price,
+    };
+
+    setProducts((prev) => [...prev, updateProduct]);
+
+    console.log(products);
+  }
+
+  function handleQuantityChange(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    const product = e.target.name;
+    const currentProduct = products.filter((item) => item.name == product);
+
+    const findQuantity = products.find(
+      (item) => item.name == product
+    )?.quantity;
+
+    console.log(
+      `A quantidade do produto ${product} foi alterada de ${findQuantity} para ${value}`
+    );
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(cnpj, company, companyName, adress);
   }
+
+  // useEffect para atualizar o totalPrice toda vez que o estado products for alterado
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -102,16 +149,24 @@ const ServiceForm = () => {
                       type="checkbox"
                       id={String(index)}
                       name={item.name}
+                      onChange={(e) => handleChangeProducts(e)}
                       className="mr-1 text-center"
                     />
                     <label htmlFor={String(index)}>{item.name}</label>
                   </td>
                   <td className="text-center">
-                    <input
-                      type="number"
-                      placeholder="0"
-                      className="w-6 text-center"
-                    />
+                    {products.find((product) => product.name == item.name) !==
+                    undefined ? (
+                      <input
+                        type="number"
+                        name={item.name}
+                        placeholder="0"
+                        onChange={(e) => handleQuantityChange(e)}
+                        className="w-6 text-center"
+                      />
+                    ) : (
+                      <p>-</p>
+                    )}
                   </td>
                   <td className="text-center">${item.price}</td>
                 </tr>
@@ -119,7 +174,7 @@ const ServiceForm = () => {
               <tr>
                 <td></td>
                 <td className="pr-2 text-end text-sm">Total</td>
-                <td className="text-sm">${}</td>
+                <td className="text-sm">${totalPrice}</td>
               </tr>
             </tbody>
           </table>
