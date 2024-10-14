@@ -1,4 +1,14 @@
-const InputRadio = ({ name, alert }: { name: string; alert?: boolean }) => {
+import { Dispatch, SetStateAction } from "react";
+
+const InputRadio = ({
+  name,
+  alert,
+  setState,
+}: {
+  name: string;
+  alert?: boolean;
+  setState: Dispatch<SetStateAction<string>>;
+}) => {
   return (
     <div className="flex flex-col mb-6">
       <p className={alert ? "text-red-600" : ""}>{name}</p>
@@ -9,6 +19,7 @@ const InputRadio = ({ name, alert }: { name: string; alert?: boolean }) => {
             id="Sim"
             name={name}
             value="Sim"
+            onChange={(e) => setState(e.target.value)}
             className="text-linx-dark-gray self-start mr-1"
           />
           <label htmlFor="Sim">Sim</label>
@@ -20,6 +31,7 @@ const InputRadio = ({ name, alert }: { name: string; alert?: boolean }) => {
             id="Não"
             name={name}
             value="Não"
+            onChange={(e) => setState(e.target.value)}
             className="text-linx-dark-gray self-start mr-1"
           />
           <label htmlFor="Não">Não</label>

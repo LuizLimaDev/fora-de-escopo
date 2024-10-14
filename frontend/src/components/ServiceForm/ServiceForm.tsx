@@ -20,6 +20,14 @@ const ServiceForm = () => {
   >([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [fiscalType, setFiscalType] = useState<string>("");
+  const [mobile, setMobile] = useState<string>("");
+  const [aa, setAa] = useState<string>("");
+  const [closed, setClosed] = useState<string>("");
+  const [numberOfPdv, setNumberOfPdv] = useState<string>("");
+  const [pdvNumber, setPdvNumber] = useState<string>("");
+  const [remotePrinter, setRemotePrinter] = useState<string>("");
+  const [extraEquipment, setEextraEquipment] = useState<string>("");
+  const [equipments, setEquipments] = useState<string>("");
 
   function handleChangeProducts(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.name;
@@ -59,7 +67,21 @@ const ServiceForm = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(cnpj, company, companyName, adress);
+    console.log(
+      cnpj,
+      company,
+      companyName,
+      adress,
+      products,
+      fiscalType,
+      mobile,
+      aa,
+      closed,
+      numberOfPdv,
+      pdvNumber,
+      remotePrinter,
+      extraEquipment
+    );
   }
 
   return (
@@ -178,17 +200,30 @@ const ServiceForm = () => {
         </div>
         <div className="mt-10 text-sm font-medium text-linx-dark-gray captalize">
           {/* guardar as opçõees em um estado em forma de objeto e colocar o codigo de ativacao do sat como required quando selecionado SAT/MFE */}
-          <InputRadio name="1- A loja utiliza Mobile (POS, celular ou Tablet)?" />
-          <InputRadio name="2- A loja utiliza Autoatendimento One" />
-          <InputRadio name="3- A loja esstá parada?" alert />
-          <InputRadio name="4- Quantos PDVs a loja possui?" />
+          <InputRadio
+            name="1- A loja utiliza Mobile (POS, celular ou Tablet)?"
+            setState={setMobile}
+          />
+          <InputRadio
+            name="2- A loja utiliza Autoatendimento One"
+            setState={setAa}
+          />
+          <InputRadio
+            name="3- A loja esstá parada?"
+            setState={setClosed}
+            alert
+          />
+          <InputRadio
+            name="4- Quantos PDVs a loja possui?"
+            setState={setNumberOfPdv}
+          />
 
           <Input
             title="5- Qual o número do PDV que será instalado?"
             type="text"
             placeholder="0"
-            value=""
-            onChange={(e) => console.log(e.target)}
+            value={pdvNumber}
+            onChange={(e) => setPdvNumber(e.target.value)}
           />
 
           <div className="flex flex-col mb-6">
@@ -200,6 +235,7 @@ const ServiceForm = () => {
                   id="nfce"
                   name="fiscalType"
                   value="Sim"
+                  onChange={(e) => setFiscalType(e.target.id)}
                   className="text-linx-dark-gray self-start mr-1"
                 />
                 <label htmlFor="nfce">NFC-e</label>
@@ -208,9 +244,10 @@ const ServiceForm = () => {
               <div className="font-sans">
                 <input
                   type="radio"
-                  id="satMfe"
+                  id="SAT/MFE"
                   name="fiscalType"
                   value="satMfe"
+                  onChange={(e) => setFiscalType(e.target.id)}
                   className="text-linx-dark-gray self-start mr-1"
                 />
                 <label htmlFor="satMfe">SAT/MFE</label>
@@ -222,6 +259,7 @@ const ServiceForm = () => {
                   id="ecf"
                   name="fiscalType"
                   value="ecf"
+                  onChange={(e) => setFiscalType(e.target.id)}
                   className="text-linx-dark-gray self-start mr-1"
                 />
                 <label htmlFor="ecf">ECF</label>
@@ -238,15 +276,22 @@ const ServiceForm = () => {
             />
           )}
 
-          <InputRadio name="7- Impressoras remotas?" />
-          <InputRadio name="8 Existe mais algum equipamento conectado?" />
+          <InputRadio
+            name="7- Impressoras remotas?"
+            setState={setRemotePrinter}
+          />
+          <InputRadio
+            name="8 Existe mais algum equipamento conectado?"
+            setState={setEextraEquipment}
+          />
 
+          {/* verificar se da para colocar mascara com vírgula e espaco pelo InputMask */}
           <Input
             title="Quais equipamentos"
             type="text"
             placeholder="Balança, Pinpad, KDS, etc..."
-            value=""
-            onChange={(e) => console.log(e.target)}
+            value={equipments}
+            onChange={(e) => setEquipments(e.target.value)}
           />
         </div>
         <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3">

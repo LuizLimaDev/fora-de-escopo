@@ -18,6 +18,7 @@ const Input = ({ title, type, placeholder, value, onChange }: Iprops) => {
         value={value}
         onChange={onChange}
         className="pl-1 border rounded-md h-9"
+        required
       />
     </div>
   );
