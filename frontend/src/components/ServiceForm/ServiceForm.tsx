@@ -40,30 +40,27 @@ const ServiceForm = () => {
     };
 
     setProducts((prev) => [...prev, updateProduct]);
-
-    console.log(products);
   }
 
   function handleQuantityChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     const product = e.target.name;
-    const currentProduct = products.filter((item) => item.name == product);
+    const currentProduct = products.find((item) => item.name === product);
 
-    const findQuantity = products.find(
-      (item) => item.name == product
-    )?.quantity;
+    currentProduct!.quantity = Number(value);
 
-    console.log(
-      `A quantidade do produto ${product} foi alterada de ${findQuantity} para ${value}`
+    const updatePrice = products.reduce(
+      (acc, item) => Number(acc) + Number(Number(item!.value) * item.quantity),
+      0
     );
+
+    setTotalPrice(updatePrice);
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(cnpj, company, companyName, adress);
   }
-
-  // useEffect para atualizar o totalPrice toda vez que o estado products for alterado
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -174,12 +171,13 @@ const ServiceForm = () => {
               <tr>
                 <td></td>
                 <td className="pr-2 text-end text-sm">Total</td>
-                <td className="text-sm">${totalPrice}</td>
+                <td className="text-sm">$ {totalPrice}</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div className="mt-10 text-sm font-medium text-linx-dark-gray captalize">
+          {/* guardar as opçõees em um estado em forma de objeto e colocar o codigo de ativacao do sat como required quando selecionado SAT/MFE */}
           <InputRadio name="1- A loja utiliza Mobile (POS, celular ou Tablet)?" />
           <InputRadio name="2- A loja utiliza Autoatendimento One" />
           <InputRadio name="3- A loja esstá parada?" alert />
