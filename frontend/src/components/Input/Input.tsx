@@ -17,7 +17,7 @@ const Input = ({ title, type, placeholder, value, onChange }: Iprops) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border rounded-md h-9"
+        className="pl-1 border rounded-md h-9"
       />
     </div>
   );

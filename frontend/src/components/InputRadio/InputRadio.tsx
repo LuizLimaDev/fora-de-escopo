@@ -1,7 +1,7 @@
-const InputRadio = ({ name }: { name: string }) => {
+const InputRadio = ({ name, alert }: { name: string; alert?: boolean }) => {
   return (
-    <div className="flex flex-col">
-      <label htmlFor={name}>{name}</label>
+    <div className="flex flex-col mb-6">
+      <p className={alert ? "text-red-600" : ""}>{name}</p>
       <div className="w-full mt-2 flex gap-24">
         <div className="font-sans">
           <input
