@@ -54,7 +54,7 @@ export default function HomePage() {
               <ClientForm />
             </div>
 
-            <button>Registrar chamado</button>
+            <button className="cursor-pointer">Registrar chamado</button>
           </div>
         </div>
       </div>

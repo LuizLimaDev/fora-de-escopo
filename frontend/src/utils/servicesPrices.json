@@ -1,0 +1,45 @@
+{
+  "products": [
+    {
+      "name": "Servidor com Backup",
+      "price": "240"
+    },
+    {
+      "name": "Servidor sem Backup",
+      "price": "480"
+    },
+    {
+      "name": "Terminal",
+      "price": "240"
+    },
+    {
+      "name": "Integrador Delivery",
+      "price": "240"
+    },
+    {
+      "name": "Linx Degust Mobile",
+      "price": "480"
+    },
+    {
+      "name": "Apk mobile",
+      "price": "240"
+    },
+
+    {
+      "name": "Autoatendimento",
+      "price": "480"
+    },
+    {
+      "name": "Painel de senha",
+      "price": "240"
+    },
+    {
+      "name": "KDS",
+      "price": "240"
+    },
+    {
+      "name": "App do consumidor",
+      "price": "240"
+    }
+  ]
+}
