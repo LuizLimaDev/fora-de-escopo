@@ -1,5 +1,6 @@
 "use client";
 
+import requiredMsg from "@/app/schema/formVallidationSchema";
 import Input from "@/components/Input/Input";
 import { ChangeEvent, useState } from "react";
 import InputMask from "react-input-mask";
@@ -20,6 +21,7 @@ const ServiceForm = () => {
   >([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [fiscalType, setFiscalType] = useState<string>("");
+  const [satCode, setSatCode] = useState<string>("");
   const [mobile, setMobile] = useState<string>("");
   const [aa, setAa] = useState<string>("");
   const [closed, setClosed] = useState<string>("");
@@ -65,6 +67,25 @@ const ServiceForm = () => {
     setTotalPrice(updatePrice);
   }
 
+  function handleValidation(e: ChangeEvent<HTMLInputElement>) {
+    const field = e.target.name;
+
+    e.target.setCustomValidity("");
+
+    requiredMsg(e, cnpj, field, "cnpj", "O CNPJ é obrigatório!");
+    requiredMsg(e, company, field, "company", "A Razão Social é obrigatória!");
+    requiredMsg(
+      e,
+      companyName,
+      field,
+      "companyName",
+      "O nome da loja é obrigatório!"
+    );
+    requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
+
+    //validacao para checkbox
+  }
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(
@@ -74,6 +95,7 @@ const ServiceForm = () => {
       adress,
       products,
       fiscalType,
+      satCode,
       mobile,
       aa,
       closed,
@@ -95,41 +117,50 @@ const ServiceForm = () => {
             <label className="text-sm font-medium">CNPJ</label>
             <InputMask
               mask="99.999.999/9999-99"
+              name="cnpj"
               type="text"
               placeholder="xxx.xxx.xxx-xx"
               value={cnpj}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setCnpj(e.target.value)
               }
+              onInvalid={handleValidation}
               className="pl-2 border rounded-md h-9"
+              required
             />
           </div>
           <Input
             title="Razão social"
             type="text"
+            name="company"
             placeholder=""
             value={company}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCompany(e.target.value)
             }
+            onInvalid={handleValidation}
           />
           <Input
             title="Nome da loja"
             type="text"
+            name="companyName"
             placeholder=""
             value={companyName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCompanyName(e.target.value)
             }
+            onInvalid={handleValidation}
           />
           <Input
             title="Endereço"
             type="text"
+            name="adress"
             placeholder=""
             value={adress}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setAdress(e.target.value)
             }
+            onInvalid={handleValidation}
           />
         </div>
         <div>
@@ -181,7 +212,7 @@ const ServiceForm = () => {
                         name={item.name}
                         placeholder="0"
                         onChange={(e) => handleQuantityChange(e)}
-                        className="w-6 text-center"
+                        className="w-10 text-center"
                       />
                     ) : (
                       <p>-</p>
@@ -213,11 +244,14 @@ const ServiceForm = () => {
             setState={setClosed}
             alert
           />
-          <InputRadio
-            name="4- Quantos PDVs a loja possui?"
-            setState={setNumberOfPdv}
-          />
 
+          <Input
+            title="4- Quantos PDVs a loja possui?"
+            type="number"
+            placeholder="0"
+            value={numberOfPdv}
+            onChange={(e) => setNumberOfPdv(e.target.value)}
+          />
           <Input
             title="5- Qual o número do PDV que será instalado?"
             type="text"
@@ -270,22 +304,22 @@ const ServiceForm = () => {
             <Input
               title="*Qual o código de ativação do SAT/MFE"
               type="text"
-              placeholder="Balança, Pinpad, KDS, etc..."
+              placeholder="código de 8 números"
               value=""
-              onChange={(e) => console.log(e.target)}
+              onChange={(e) => setSatCode(e.target.value)}
             />
           )}
+          {}
 
           <InputRadio
             name="7- Impressoras remotas?"
             setState={setRemotePrinter}
           />
           <InputRadio
-            name="8 Existe mais algum equipamento conectado?"
+            name="8- Existe mais algum equipamento conectado?"
             setState={setEextraEquipment}
           />
 
-          {/* verificar se da para colocar mascara com vírgula e espaco pelo InputMask */}
           <Input
             title="Quais equipamentos"
             type="text"

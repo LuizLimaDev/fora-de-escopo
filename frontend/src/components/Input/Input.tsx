@@ -1,24 +1,36 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, FormEventHandler } from "react";
 
 interface Iprops {
   title: string;
   type: string;
+  name?: string;
   placeholder: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement> | undefined;
+  onInvalid?: FormEventHandler<HTMLInputElement> | undefined;
 }
 
-const Input = ({ title, type, placeholder, value, onChange }: Iprops) => {
+const Input = ({
+  title,
+  type,
+  name,
+  placeholder,
+  value,
+  onChange,
+  onInvalid,
+}: Iprops) => {
   return (
     <div className="container-input my-4">
       <label className="text-sm font-medium">{title}</label>
       <input
         type={type}
+        name={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         className="pl-1 border rounded-md h-9"
         required
+        onInvalid={onInvalid}
       />
     </div>
   );
