@@ -21,6 +21,8 @@ const ClientForm = () => {
 
   const { setClientdata } = context;
 
+  // TODO - fazer validações para o required
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
@@ -43,7 +45,6 @@ const ClientForm = () => {
 
     setClientdata(clientData);
 
-    //TODO - redirect para pagina de questionario de configuração
     router.push("/service");
 
     console.log("form enviado: ", clientData);

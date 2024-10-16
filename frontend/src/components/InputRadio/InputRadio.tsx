@@ -1,17 +1,17 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, FormEventHandler, SetStateAction } from "react";
 
-const InputRadio = ({
-  name,
-  alert,
-  setState,
-}: {
+interface Iprops {
+  title: string;
   name: string;
   alert?: boolean;
   setState: Dispatch<SetStateAction<string>>;
-}) => {
+  onInvalid: FormEventHandler<HTMLInputElement> | undefined;
+}
+
+const InputRadio = ({ title, name, alert, setState, onInvalid }: Iprops) => {
   return (
     <div className="flex flex-col mb-6">
-      <p className={alert ? "text-red-600" : ""}>{name}</p>
+      <p className={alert ? "text-red-600" : ""}>{title}</p>
       <div className="w-full mt-2 flex gap-24">
         <div className="font-sans">
           <input
@@ -21,6 +21,8 @@ const InputRadio = ({
             value="Sim"
             onChange={(e) => setState(e.target.value)}
             className="text-linx-dark-gray self-start mr-1"
+            required
+            onInvalid={onInvalid}
           />
           <label htmlFor="Sim">Sim</label>
         </div>

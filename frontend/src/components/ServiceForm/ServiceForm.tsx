@@ -1,6 +1,6 @@
 "use client";
 
-import requiredMsg from "@/app/schema/formVallidationSchema";
+import requiredMsg from "@/app/schemas/requiredFormSchema";
 import Input from "@/components/Input/Input";
 import { ChangeEvent, useState } from "react";
 import InputMask from "react-input-mask";
@@ -28,8 +28,9 @@ const ServiceForm = () => {
   const [numberOfPdv, setNumberOfPdv] = useState<string>("");
   const [pdvNumber, setPdvNumber] = useState<string>("");
   const [remotePrinter, setRemotePrinter] = useState<string>("");
-  const [extraEquipment, setEextraEquipment] = useState<string>("");
+  const [extraEquipment, setExtraEquipment] = useState<string>("");
   const [equipments, setEquipments] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   function handleChangeProducts(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.name;
@@ -69,7 +70,7 @@ const ServiceForm = () => {
 
   function handleValidation(e: ChangeEvent<HTMLInputElement>) {
     const field = e.target.name;
-
+    setError("");
     e.target.setCustomValidity("");
 
     requiredMsg(e, cnpj, field, "cnpj", "O CNPJ é obrigatório!");
@@ -82,12 +83,26 @@ const ServiceForm = () => {
       "O nome da loja é obrigatório!"
     );
     requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
+    requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
 
-    //validacao para checkbox
+    // TODO - validacao para checkbox
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    // TODO - validar se há produtos selecionados e se a qtd é maior que 0
+    if (products.length == 0) {
+      setError("É necessário selecionar ao menos um produto!");
+      return;
+    }
+
+    //  TODO - Objeto de envio para api de acordo com a collection
+
+    // TODO - chamada para a api
+
+    // TODO - ativar o modal com o número do chamado
+
     console.log(
       cnpj,
       company,
@@ -139,6 +154,7 @@ const ServiceForm = () => {
               setCompany(e.target.value)
             }
             onInvalid={handleValidation}
+            required
           />
           <Input
             title="Nome da loja"
@@ -150,6 +166,7 @@ const ServiceForm = () => {
               setCompanyName(e.target.value)
             }
             onInvalid={handleValidation}
+            required
           />
           <Input
             title="Endereço"
@@ -161,6 +178,7 @@ const ServiceForm = () => {
               setAdress(e.target.value)
             }
             onInvalid={handleValidation}
+            required
           />
         </div>
         <div>
@@ -230,34 +248,45 @@ const ServiceForm = () => {
           </table>
         </div>
         <div className="mt-10 text-sm font-medium text-linx-dark-gray captalize">
-          {/* guardar as opçõees em um estado em forma de objeto e colocar o codigo de ativacao do sat como required quando selecionado SAT/MFE */}
           <InputRadio
-            name="1- A loja utiliza Mobile (POS, celular ou Tablet)?"
+            title="1- A loja utiliza Mobile (POS, celular ou Tablet)?"
+            name="mobile"
             setState={setMobile}
+            onInvalid={handleValidation}
           />
           <InputRadio
-            name="2- A loja utiliza Autoatendimento One"
+            title="2- A loja utiliza Autoatendimento One"
+            name="aa"
             setState={setAa}
+            onInvalid={handleValidation}
           />
           <InputRadio
-            name="3- A loja esstá parada?"
+            title="3- A loja esstá parada?"
+            name="closed"
             setState={setClosed}
+            onInvalid={handleValidation}
             alert
           />
 
           <Input
             title="4- Quantos PDVs a loja possui?"
             type="number"
+            name="numberOfPdv"
             placeholder="0"
             value={numberOfPdv}
             onChange={(e) => setNumberOfPdv(e.target.value)}
+            required
+            onInvalid={handleValidation}
           />
           <Input
             title="5- Qual o número do PDV que será instalado?"
             type="text"
+            name="pdvNumber"
             placeholder="0"
             value={pdvNumber}
             onChange={(e) => setPdvNumber(e.target.value)}
+            required
+            onInvalid={handleValidation}
           />
 
           <div className="flex flex-col mb-6">
@@ -271,6 +300,7 @@ const ServiceForm = () => {
                   value="Sim"
                   onChange={(e) => setFiscalType(e.target.id)}
                   className="text-linx-dark-gray self-start mr-1"
+                  required
                 />
                 <label htmlFor="nfce">NFC-e</label>
               </div>
@@ -304,20 +334,26 @@ const ServiceForm = () => {
             <Input
               title="*Qual o código de ativação do SAT/MFE"
               type="text"
+              name="satCode"
               placeholder="código de 8 números"
               value=""
               onChange={(e) => setSatCode(e.target.value)}
+              required
+              onInvalid={handleValidation}
             />
           )}
-          {}
 
           <InputRadio
-            name="7- Impressoras remotas?"
+            title="7- Impressoras remotas?"
+            name="remotePrinter"
             setState={setRemotePrinter}
+            onInvalid={handleValidation}
           />
           <InputRadio
-            name="8- Existe mais algum equipamento conectado?"
-            setState={setEextraEquipment}
+            name="extraEquipment"
+            title="8- Existe mais algum equipamento conectado?"
+            setState={setExtraEquipment}
+            onInvalid={handleValidation}
           />
 
           <Input
@@ -328,6 +364,8 @@ const ServiceForm = () => {
             onChange={(e) => setEquipments(e.target.value)}
           />
         </div>
+        <span className="text-sm text-red-600">{error}</span>
+
         <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3">
           Registrar chamado
         </button>
