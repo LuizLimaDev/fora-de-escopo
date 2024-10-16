@@ -19,9 +19,7 @@ const ClientForm = () => {
     throw new Error("useContext must be used within a TpProvider");
   }
 
-  const { setClientdata } = context;
-
-  // TODO - fazer validações para o required
+  const { setClientData } = context;
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,11 +41,9 @@ const ClientForm = () => {
       phone: cleanedPhone,
     };
 
-    setClientdata(clientData);
+    setClientData(clientData);
 
     router.push("/service");
-
-    console.log("form enviado: ", clientData);
   }
 
   return (

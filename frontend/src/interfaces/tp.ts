@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 interface IClientData {
   name: string;
   email: string;
@@ -34,13 +32,4 @@ interface IService {
   activation_code: null | string;
 }
 
-interface ItpContext {
-  clientData: IClientData;
-  setClientdata: Dispatch<SetStateAction<IClientData>>;
-  company: ICompany;
-  setCompany: Dispatch<SetStateAction<ICompany>>;
-  service: IService;
-  setService: Dispatch<SetStateAction<IService>>;
-}
-
-export type { IClientData, ICompany, IProduct, IService, ItpContext };
+export type { IClientData, ICompany, IProduct, IService };

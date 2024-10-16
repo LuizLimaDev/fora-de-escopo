@@ -1,52 +1,38 @@
 "use client";
 
-import { IClientData, ICompany, IService, ItpContext } from "@/interfaces/tp";
-import { createContext, ReactNode, useState } from "react";
+import { IClientData } from "@/interfaces/tp";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 
-export const tpContext = createContext<ItpContext | undefined>(undefined);
+const defaultClientData: IClientData = {
+  name: "",
+  email: "",
+  cpf: "",
+  role: "",
+  phone: "",
+};
+
+export const tpContext = createContext<{
+  clientData: IClientData | undefined;
+  setClientData: Dispatch<SetStateAction<IClientData | undefined>>;
+}>({
+  clientData: defaultClientData,
+  setClientData: () => {},
+});
 
 export const TpProvider = ({ children }: { children: ReactNode }) => {
-  const [clientData, setClientdata] = useState<IClientData>({
-    name: "",
-    email: "",
-    cpf: "",
-    role: "",
-    phone: "",
-  });
-  const [company, setCompany] = useState<ICompany>({
-    cnpj: "",
-    name: "",
-    company_name: "",
-    adress: "",
-  });
-  const [service, setService] = useState<IService>({
-    product: [
-      {
-        name: "",
-        quantity: "",
-        value: 0,
-      },
-    ],
-    mobile: false,
-    closed: false,
-    aa: false,
-    number_of_pdv: 0,
-    remote_printer: false,
-    extra_equipment: false,
-    equipments: [""],
-    tax: "",
-    activation_code: null,
-  });
+  const [clientData, setClientData] = useState<IClientData>();
 
   return (
     <tpContext.Provider
       value={{
         clientData,
-        setClientdata,
-        company,
-        setCompany,
-        service,
-        setService,
+        setClientData,
       }}
     >
       {children}
