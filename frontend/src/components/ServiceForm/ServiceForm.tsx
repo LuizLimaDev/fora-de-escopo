@@ -2,7 +2,9 @@
 
 import requiredMsg from "@/app/schemas/requiredFormSchema";
 import Input from "@/components/Input/Input";
-import { ChangeEvent, useState } from "react";
+import tpContext from "@/context/tpContext";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useContext, useState } from "react";
 import InputMask from "react-input-mask";
 import servicesPrices from "../../utils/servicesPrices.json";
 import InputRadio from "../InputRadio/InputRadio";
@@ -31,6 +33,8 @@ const ServiceForm = () => {
   const [extraEquipment, setExtraEquipment] = useState<string>("");
   const [equipments, setEquipments] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const router = useRouter();
+  const { clientData } = useContext(tpContext);
 
   function handleChangeProducts(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.name;
@@ -40,7 +44,17 @@ const ServiceForm = () => {
     )?.price;
 
     if (!checked) {
+      const currentProduct = products.find((item) => item.name == value);
+
+      if (currentProduct!.quantity > 0) {
+        setTotalPrice(
+          (prev) =>
+            prev - currentProduct!.quantity * Number(currentProduct!.value)
+        );
+      }
+
       setProducts((prev) => prev.filter((product) => product.name !== value));
+
       return;
     }
 
@@ -94,7 +108,7 @@ const ServiceForm = () => {
       "Este campo é obrigatório!"
     );
 
-    if (satCode.length < 8) {
+    if (satCode.length > 0 && satCode.length < 8) {
       e.target.setCustomValidity("O código de ativação deve conter 8 digitos!");
       return;
     }
@@ -119,34 +133,41 @@ const ServiceForm = () => {
     e.preventDefault();
     setError("");
 
-    // TODO - validar se há produtos selecionados e se a qtd é maior que 0
     if (products.length == 0 || products[0].quantity == 0) {
       setError("É necessário selecionar ao menos um produto e a quantidade!");
       return;
     }
 
-    //  TODO - Objeto de envio para api de acordo com a collection
+    const tp = {
+      ...clientData,
+      company: {
+        cnpj,
+        company,
+        companyName,
+        adress,
+      },
+      service: {
+        products: {
+          products,
+          totalPrice,
+        },
+        mobile,
+        aa,
+        closed,
+        numberOfPdv,
+        pdvNumber,
+        fiscalType,
+        satCode,
+        remotePrinter,
+        extraEquipment,
+      },
+    };
 
     // TODO - chamada para a api
 
-    // TODO - ativar o modal com o número do chamado
+    console.log(tp);
 
-    console.log(
-      cnpj,
-      company,
-      companyName,
-      adress,
-      products,
-      fiscalType,
-      satCode,
-      mobile,
-      aa,
-      closed,
-      numberOfPdv,
-      pdvNumber,
-      remotePrinter,
-      extraEquipment
-    );
+    router.push("/service/sucess");
   }
 
   return (
@@ -258,6 +279,7 @@ const ServiceForm = () => {
                         name={item.name}
                         placeholder="0"
                         onChange={(e) => handleQuantityChange(e)}
+                        onBlur={(e) => handleQuantityChange(e)}
                         className="w-10 text-center"
                       />
                     ) : (
