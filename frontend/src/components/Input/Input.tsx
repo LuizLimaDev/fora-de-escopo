@@ -9,6 +9,8 @@ interface Iprops {
   onChange: ChangeEventHandler<HTMLInputElement> | undefined;
   required?: boolean | undefined;
   onInvalid?: FormEventHandler<HTMLInputElement> | undefined;
+  min?: string;
+  max?: string;
 }
 
 const Input = ({
@@ -20,6 +22,8 @@ const Input = ({
   onChange,
   required,
   onInvalid,
+  min,
+  max,
 }: Iprops) => {
   return (
     <div className="container-input my-4">
@@ -33,6 +37,8 @@ const Input = ({
         className="pl-1 border rounded-md h-9"
         required={required}
         onInvalid={onInvalid}
+        min={min}
+        max={max}
       />
     </div>
   );

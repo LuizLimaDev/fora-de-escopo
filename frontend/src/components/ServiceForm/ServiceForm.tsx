@@ -68,7 +68,7 @@ const ServiceForm = () => {
     setTotalPrice(updatePrice);
   }
 
-  function handleValidation(e: ChangeEvent<HTMLInputElement>) {
+  function handleOnInvalid(e: ChangeEvent<HTMLInputElement>) {
     const field = e.target.name;
     setError("");
     e.target.setCustomValidity("");
@@ -83,17 +83,45 @@ const ServiceForm = () => {
       "O nome da loja é obrigatório!"
     );
     requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
-    requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
+    requiredMsg(e, mobile, field, "mobile", "Escolha uma das opções!");
+    requiredMsg(e, aa, field, "aa", "Escolha uma das opções!");
+    requiredMsg(e, closed, field, "closed", "Escolha uma das opções!");
+    requiredMsg(
+      e,
+      numberOfPdv,
+      field,
+      "numberOfPdv",
+      "Este campo é obrigatório!"
+    );
 
-    // TODO - validacao para checkbox
+    if (satCode.length < 8) {
+      e.target.setCustomValidity("O código de ativação deve conter 8 digitos!");
+      return;
+    }
+
+    requiredMsg(
+      e,
+      remotePrinter,
+      field,
+      "remotePrinter",
+      "Escolha uma das opções!"
+    );
+    requiredMsg(
+      e,
+      extraEquipment,
+      field,
+      "extraEquipment",
+      "Escolha uma das opções!"
+    );
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError("");
 
     // TODO - validar se há produtos selecionados e se a qtd é maior que 0
-    if (products.length == 0) {
-      setError("É necessário selecionar ao menos um produto!");
+    if (products.length == 0 || products[0].quantity == 0) {
+      setError("É necessário selecionar ao menos um produto e a quantidade!");
       return;
     }
 
@@ -139,7 +167,7 @@ const ServiceForm = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setCnpj(e.target.value)
               }
-              onInvalid={handleValidation}
+              onInvalid={handleOnInvalid}
               className="pl-2 border rounded-md h-9"
               required
             />
@@ -153,7 +181,7 @@ const ServiceForm = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCompany(e.target.value)
             }
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
             required
           />
           <Input
@@ -165,7 +193,7 @@ const ServiceForm = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCompanyName(e.target.value)
             }
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
             required
           />
           <Input
@@ -177,7 +205,7 @@ const ServiceForm = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setAdress(e.target.value)
             }
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
             required
           />
         </div>
@@ -252,19 +280,19 @@ const ServiceForm = () => {
             title="1- A loja utiliza Mobile (POS, celular ou Tablet)?"
             name="mobile"
             setState={setMobile}
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
           <InputRadio
             title="2- A loja utiliza Autoatendimento One"
             name="aa"
             setState={setAa}
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
           <InputRadio
             title="3- A loja esstá parada?"
             name="closed"
             setState={setClosed}
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
             alert
           />
 
@@ -276,7 +304,7 @@ const ServiceForm = () => {
             value={numberOfPdv}
             onChange={(e) => setNumberOfPdv(e.target.value)}
             required
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
           <Input
             title="5- Qual o número do PDV que será instalado?"
@@ -285,8 +313,7 @@ const ServiceForm = () => {
             placeholder="0"
             value={pdvNumber}
             onChange={(e) => setPdvNumber(e.target.value)}
-            required
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
 
           <div className="flex flex-col mb-6">
@@ -333,13 +360,14 @@ const ServiceForm = () => {
           {fiscalType == "SAT/MFE" && (
             <Input
               title="*Qual o código de ativação do SAT/MFE"
-              type="text"
+              type="number"
               name="satCode"
               placeholder="código de 8 números"
-              value=""
+              value={satCode}
               onChange={(e) => setSatCode(e.target.value)}
               required
-              onInvalid={handleValidation}
+              onInvalid={handleOnInvalid}
+              min="8"
             />
           )}
 
@@ -347,13 +375,13 @@ const ServiceForm = () => {
             title="7- Impressoras remotas?"
             name="remotePrinter"
             setState={setRemotePrinter}
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
           <InputRadio
             name="extraEquipment"
             title="8- Existe mais algum equipamento conectado?"
             setState={setExtraEquipment}
-            onInvalid={handleValidation}
+            onInvalid={handleOnInvalid}
           />
 
           <Input
@@ -364,7 +392,9 @@ const ServiceForm = () => {
             onChange={(e) => setEquipments(e.target.value)}
           />
         </div>
-        <span className="text-sm text-red-600">{error}</span>
+        <span className="flex justify-center items-center text-sm text-red-600 text-center">
+          {error}
+        </span>
 
         <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3">
           Registrar chamado
