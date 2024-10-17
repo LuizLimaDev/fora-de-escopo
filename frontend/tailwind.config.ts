@@ -7,6 +7,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xl: "1280px",
+      xxl: "1440px",
+    },
     extend: {
       colors: {
         linx: {

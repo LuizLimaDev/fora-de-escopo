@@ -50,7 +50,7 @@ const ClientForm = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-3 text-linx-dark-gray"
+        className="flex flex-col gap-3 text-linx-dark-gray mb-4"
       >
         <div className="container-input">
           <label className="input-title">Nome completo</label>
@@ -116,7 +116,7 @@ const ClientForm = () => {
         </div>
         <span className="w-full text-red-600">{error}</span>
 
-        <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3">
+        <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 xl:mt-0 py-3">
           Registrar chamado
         </button>
       </form>

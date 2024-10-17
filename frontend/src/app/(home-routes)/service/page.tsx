@@ -1,3 +1,4 @@
+import ClientInfo from "@/components/ClientInfo/ClientInfo";
 import ServiceForm from "@/components/ServiceForm/ServiceForm";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,7 +6,7 @@ import Link from "next/link";
 const Service = () => {
   return (
     <main className="w-screen h-screen p-4">
-      <div className="flex mb-10 gap-12">
+      <div className="flex xl:justify-between mb-10 xl:mt-8 xl:px-28  gap-12">
         <div>
           <h1 className="linx-title text-3xl">Linx Degust</h1>
           <h1 className="linx-title text-3xl">Serviço fora de escopo</h1>
@@ -14,17 +15,20 @@ const Service = () => {
         <Image
           src="/linx-logo.svg"
           alt="logo linx"
-          width={60}
-          height={35}
-          className="mb-12"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-[3.75rem] h-[2.1875rem] xl:w-32 xl:h-16  mb-12"
         />
       </div>
 
-      <div className="w-full flex-col-center">
+      <div className="w-full xl:ml-16 flex-col-center xl:flex-row xl:justify-between xl:items-center xl:gap-44">
         <ServiceForm />
+
+        <ClientInfo />
       </div>
 
-      <div className="mt-10 pb-10 text-justify">
+      <div className="mt-10 xl:px-10 pb-10 text-justify">
         <h2 className="text-linx-orange mb-2">PRÉ-REQUISITOS</h2>
         <p className="mb-4">
           • Consulte os requisitos mínimos de equipamentos em: 

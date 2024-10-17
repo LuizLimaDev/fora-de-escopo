@@ -171,7 +171,7 @@ const ServiceForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
+    <form onSubmit={handleSubmit} className="w-full xl:w-[52.375rem]">
       <div className="w-full p-4 bg-linx-white rounded-3xl text-m text-linx-dark-gray font-roboto">
         <h1 className="mt-2 font-dosis font-bold text-center text-linx-purple text-2xl">
           Questionário de instalação

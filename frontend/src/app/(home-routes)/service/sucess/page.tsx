@@ -4,7 +4,7 @@ import Link from "next/link";
 const ModalSucess = () => {
   return (
     <main className="w-screen h-screen flex-col-center">
-      <div className="w-[90%] rounded-3xl px-6 py-20 flex-col-center gap-20 bg-linx-white">
+      <div className="w-[90%] xl:w-[58%] xl:h-[80%] rounded-3xl px-6 py-20 flex-col-center gap-20 bg-linx-white">
         <h1 className="font-dosis font-bold text-linx-purple text-5xl text-center">
           Chamado registrado
         </h1>
