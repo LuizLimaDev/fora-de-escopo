@@ -1,5 +1,3 @@
-"use client";
-
 import requiredMsg from "@/app/schemas/requiredFormSchema";
 import Input from "@/components/Input/Input";
 import tpContext from "@/context/tpContext";

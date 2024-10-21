@@ -1,5 +1,3 @@
-"use client";
-
 import tpContext from "@/context/tpContext";
 import { useContext } from "react";
 
@@ -7,7 +5,7 @@ const ClientInfo = () => {
   const { clientData } = useContext(tpContext);
 
   return (
-    <div className="w-[40%]">
+    <div className="hidden xl:block w-[40%]">
       <h2 className=" font-bold font-roboto text-linx-orange text-2xl">
         Solicitante
       </h2>
