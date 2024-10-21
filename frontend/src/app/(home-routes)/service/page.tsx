@@ -1,9 +1,18 @@
+"use client";
+
 import ClientInfo from "@/components/ClientInfo/ClientInfo";
 import ServiceForm from "@/components/ServiceForm/ServiceForm";
+import tpContext from "@/context/tpContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 const Service = () => {
+  const { clientData } = useContext(tpContext);
+  const router = useRouter();
+  if (!clientData) router.back();
+
   return (
     <main className="w-screen h-screen p-4">
       <div className="flex xl:justify-between mb-10 xl:mt-8 xl:px-28  gap-12">
