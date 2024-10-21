@@ -11,7 +11,7 @@ import { useContext } from "react";
 const Service = () => {
   const { clientData } = useContext(tpContext);
   const router = useRouter();
-  if (!clientData) router.back();
+  if (!clientData) router.push("/");
 
   return (
     <main className="w-screen h-screen p-4">
