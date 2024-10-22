@@ -22,7 +22,7 @@ const ServiceForm = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [mobile, setMobile] = useState<string>("");
   const [aa, setAa] = useState<string>("");
-  const [closed, setClosed] = useState<string>("");
+  const [shopClosed, setShopClosed] = useState<string>("");
   const [numberOfPdv, setNumberOfPdv] = useState<string>("");
   const [pdvNumber, setPdvNumber] = useState<string>("");
   const [fiscalType, setFiscalType] = useState<string>("");
@@ -98,7 +98,7 @@ const ServiceForm = () => {
     requiredMsg(e, adress, field, "adress", "O endereço é obrigatório!");
     requiredMsg(e, mobile, field, "mobile", "Escolha uma das opções!");
     requiredMsg(e, aa, field, "aa", "Escolha uma das opções!");
-    requiredMsg(e, closed, field, "closed", "Escolha uma das opções!");
+    requiredMsg(e, shopClosed, field, "closed", "Escolha uma das opções!");
     requiredMsg(
       e,
       numberOfPdv,
@@ -154,18 +154,17 @@ const ServiceForm = () => {
         companyName,
         adress,
       },
-      service: {
-        products: {
-          products,
-          totalPrice,
-        },
+      service: [...products],
+      totalPrice,
+      config: {
         mobile,
         aa,
-        closed,
+        shopClosed,
         numberOfPdv,
         pdvNumber,
         fiscalType,
         satCode,
+        fiscalPrinter,
         remotePrinter,
         extraEquipment,
       },
@@ -320,8 +319,8 @@ const ServiceForm = () => {
           />
           <InputRadio
             title="3- A loja esstá parada?"
-            name="closed"
-            setState={setClosed}
+            name="shopClosed"
+            setState={setShopClosed}
             onInvalid={handleOnInvalid}
             alert
           />
