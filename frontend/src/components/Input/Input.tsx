@@ -11,6 +11,8 @@ interface Iprops {
   onInvalid?: FormEventHandler<HTMLInputElement> | undefined;
   min?: string;
   max?: string;
+
+  alert?: boolean;
 }
 
 const Input = ({
@@ -24,10 +26,13 @@ const Input = ({
   onInvalid,
   min,
   max,
+  alert,
 }: Iprops) => {
   return (
     <div className="container-input my-4">
-      <label className="text-sm font-medium">{title}</label>
+      <label className={`text-sm font-medium ${alert && "text-red-600"}`}>
+        {title}
+      </label>
       <input
         type={type}
         name={name}

@@ -1,1 +1,3 @@
-## TODO - retirar valor negativo da quantidade dos produtos e outros inputs number
+## TODO - arrumar o objeto da api (olhar no backend)
+
+## TODO - arrumar o erro do required no Input mask

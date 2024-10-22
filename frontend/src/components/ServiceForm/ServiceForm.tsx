@@ -20,13 +20,14 @@ const ServiceForm = () => {
     }[]
   >([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [fiscalType, setFiscalType] = useState<string>("");
-  const [satCode, setSatCode] = useState<string>("");
   const [mobile, setMobile] = useState<string>("");
   const [aa, setAa] = useState<string>("");
   const [closed, setClosed] = useState<string>("");
   const [numberOfPdv, setNumberOfPdv] = useState<string>("");
   const [pdvNumber, setPdvNumber] = useState<string>("");
+  const [fiscalType, setFiscalType] = useState<string>("");
+  const [satCode, setSatCode] = useState<string>("");
+  const [fiscalPrinter, setFiscalPrinter] = useState<string>("");
   const [remotePrinter, setRemotePrinter] = useState<string>("");
   const [extraEquipment, setExtraEquipment] = useState<string>("");
   const [equipments, setEquipments] = useState<string>("");
@@ -106,11 +107,20 @@ const ServiceForm = () => {
       "Este campo é obrigatório!"
     );
 
-    if (satCode.length > 0 && satCode.length < 8) {
+    if (satCode.length < 8 && field == "satCode") {
       e.target.setCustomValidity("O código de ativação deve conter 8 digitos!");
       return;
     }
+    console.log(satCode.length);
 
+    console.log(field);
+    requiredMsg(
+      e,
+      fiscalPrinter,
+      field,
+      "fiscalPrinter",
+      "Preencha a marca e modelo da impressora!"
+    );
     requiredMsg(
       e,
       remotePrinter,
@@ -377,17 +387,28 @@ const ServiceForm = () => {
               </div>
             </div>
           </div>
+          <Input
+            title="Qual é a marca e modelo da impressora de Cupom Fiscal?"
+            type="text"
+            name="fiscalPrinter"
+            placeholder=""
+            value={fiscalPrinter}
+            onChange={(e) => setFiscalPrinter(e.target.value)}
+            onInvalid={handleOnInvalid}
+            required
+          />
           {fiscalType == "SAT/MFE" && (
             <Input
               title="*Qual o código de ativação do SAT/MFE"
               type="number"
               name="satCode"
-              placeholder="código de 8 números"
+              placeholder="código recebido na ativação com o fabricante"
               value={satCode}
               onChange={(e) => setSatCode(e.target.value)}
               required
               onInvalid={handleOnInvalid}
               min="8"
+              alert
             />
           )}
 
