@@ -2,8 +2,8 @@ import express from "express";
 import {
   deleteTp,
   getAllTp,
+  getTpById,
   getTpByTpCNPJ,
-  getTpByTpNumber,
   postTp,
 } from "../controllers/cases.js";
 
@@ -13,9 +13,9 @@ routes.get("/", (req, res) => {
   res.status(200).json({ message: "API working..." });
 });
 routes.get("/tp", getAllTp);
-routes.get("/tp/:tpNumber", getTpByTpNumber);
-routes.get("/tp/cnpj/:tpCnpj", getTpByTpCNPJ);
 routes.post("/tp", postTp);
-routes.delete("/tp/:tpNumber", deleteTp);
+routes.get("/tp/cnpj/:tpCnpj", getTpByTpCNPJ);
+routes.get("/tp/:id", getTpById);
+routes.delete("/tp/:tpId", deleteTp);
 
 export default routes;
