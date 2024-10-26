@@ -12,10 +12,11 @@ const getAllTp = async (req, res) => {
   }
 };
 
-const getTpByTpNumber = async (req, res) => {
+const getTpById = async (req, res) => {
   try {
-    const tpNumber = req.params.tpNumber;
-    const foundedTp = await tp.findOne({ tp: tpNumber });
+    const tpId = req.params.id;
+
+    const foundedTp = await tp.findById(tpId);
 
     res.status(200).json(foundedTp);
   } catch (error) {
@@ -26,7 +27,9 @@ const getTpByTpNumber = async (req, res) => {
 const getTpByTpCNPJ = async (req, res) => {
   try {
     const cnpj = req.params.tpCnpj;
-    const foundedTp = await tp.findOne({ cnpj: cnpj });
+    const foundedTp = await tp.findOne({ "company.cnpj": cnpj });
+
+    console.log("cnpj informado: ", cnpj, "tp encontrada: ", foundedTp);
 
     res.status(200).json(foundedTp);
   } catch (error) {
@@ -36,7 +39,14 @@ const getTpByTpCNPJ = async (req, res) => {
 
 const postTp = async (req, res) => {
   try {
-    const newTp = await tp.create(req.body);
+    const newTp = req.body;
+
+    if (newTp && newTp.company.cnpj) {
+      newTp.company.cnpj = newTp.company.cnpj.replace(/[./-]/g, "");
+    }
+
+    await tp.create(newTp);
+
     res.status(201).json({ message: "Criada com sucesso", tp: newTp });
   } catch (error) {
     res
@@ -47,16 +57,16 @@ const postTp = async (req, res) => {
 
 const deleteTp = async (req, res) => {
   try {
-    const tpNumber = req.params.tpNumber;
-    const foundedTP = await tp.findOne({ tp: tpNumber });
+    const tpId = req.params.tpId;
+    const foundedTP = await tp.findOne({ _id: tpId });
 
     const id = foundedTP._id;
     await tp.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "TP deletada com sucesso" });
+    res.status(200).json({ message: "TP deletada com sucesso", tp: foundedTP });
   } catch (error) {
     res.status(500).json({ message: `${error.message} - falha na exclusão.` });
   }
 };
 
-export { deleteTp, getAllTp, getTpByTpCNPJ, getTpByTpNumber, postTp };
+export { deleteTp, getAllTp, getTpById, getTpByTpCNPJ, postTp };
