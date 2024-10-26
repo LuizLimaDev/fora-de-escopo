@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const tpSchema = new mongoose.Schema(
   {
     id: { type: mongoose.Schema.Types.ObjectId },
-    tp: { type: Number, required: true },
     name: { type: String, required: true },
     email: { type: String, required: true },
     cpf: { type: String, required: true },
@@ -35,10 +34,11 @@ const tpSchema = new mongoose.Schema(
       remotePrinter: { type: Boolean, required: true },
       extraEquipment: [{ type: String }],
     },
+    createAt: { type: Date, default: Date.now },
   },
   { versionKey: false }
 );
 
-const cases = mongoose.model("tp", tpSchema);
+const cases = mongoose.model("cases", tpSchema);
 
 export default cases;
