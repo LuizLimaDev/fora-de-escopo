@@ -1,4 +1,6 @@
 import tp from "../models/tp.js";
+import htmlCompiler from "../services/mail/htmlCompiler.js";
+import transport from "../services/mail/mailConnection.js";
 
 const getAllTp = async (req, res) => {
   try {
@@ -46,6 +48,29 @@ const postTp = async (req, res) => {
     }
 
     await tp.create(newTp);
+
+    const html = await htmlCompiler("./src/services/mail/mail.html", {
+      name: newTp.name,
+      cpf: newTp.cpf,
+      role: newTp.role,
+      cnpj: newTp.company.cnpj,
+      company: newTp.company.company,
+      companyName: newTp.company.companyName,
+      adress: newTp.company.adress,
+      mail: newTp.mail,
+      phone: newTp.phone,
+      services: newTp.services,
+      totalPrice: newTp.totalPrice,
+      authorized: newTp.authorized && "EU AUTORIZO O SERVIÇO!",
+      //TODO - como inserir todos os serviços do array de objetos nesta tag?
+    });
+
+    transport.sendMail({
+      from: `Luiz Lima <devluizlima@gmail.com>`,
+      to: `${newTp.name} <${newTp.email}>`,
+      subject: `FORA DE ESCOPO - Linx Degust caso ${newTp.company.companyName}`,
+      html,
+    });
 
     res.status(201).json({ message: "Criada com sucesso", tp: newTp });
   } catch (error) {
