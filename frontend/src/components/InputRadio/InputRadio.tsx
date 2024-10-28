@@ -6,13 +6,25 @@ interface Iprops {
   alert?: boolean;
   setState: Dispatch<SetStateAction<string>>;
   onInvalid: FormEventHandler<HTMLInputElement> | undefined;
+  alingAnswerCenter?: boolean;
 }
 
-const InputRadio = ({ title, name, alert, setState, onInvalid }: Iprops) => {
+const InputRadio = ({
+  title,
+  name,
+  alert,
+  setState,
+  onInvalid,
+  alingAnswerCenter,
+}: Iprops) => {
   return (
     <div className="flex flex-col mb-6">
-      <p className={alert ? "text-red-600" : ""}>{title}</p>
-      <div className="w-full mt-2 flex gap-24">
+      <p className={alert ? "text-red-600 text-[1.25rem]" : ""}>{title}</p>
+      <div
+        className={`w-full mt-2 flex gap-24 ${
+          alingAnswerCenter && "justify-center items-center"
+        }`}
+      >
         <div className="font-sans">
           <input
             type="radio"
