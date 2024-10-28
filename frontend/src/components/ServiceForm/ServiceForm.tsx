@@ -16,7 +16,7 @@ const ServiceForm = () => {
     {
       name: string;
       quantity: number;
-      value: string | undefined;
+      price: string | undefined;
     }[]
   >([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -31,6 +31,7 @@ const ServiceForm = () => {
   const [remotePrinter, setRemotePrinter] = useState<string>("");
   const [extraEquipment, setExtraEquipment] = useState<string>("");
   const [equipments, setEquipments] = useState<string>("");
+  const [authorized, setAuthorized] = useState<string>("");
   const [error, setError] = useState<string>("");
   const router = useRouter();
   const { clientData } = useContext(tpContext);
@@ -48,7 +49,7 @@ const ServiceForm = () => {
       if (currentProduct!.quantity > 0) {
         setTotalPrice(
           (prev) =>
-            prev - currentProduct!.quantity * Number(currentProduct!.value)
+            prev - currentProduct!.quantity * Number(currentProduct!.price)
         );
       }
 
@@ -60,7 +61,7 @@ const ServiceForm = () => {
     const updateProduct = {
       name: value,
       quantity: 0,
-      value: price,
+      price,
     };
 
     setProducts((prev) => [...prev, updateProduct]);
@@ -74,7 +75,7 @@ const ServiceForm = () => {
     currentProduct!.quantity = Number(value);
 
     const updatePrice = products.reduce(
-      (acc, item) => Number(acc) + Number(Number(item!.value) * item.quantity),
+      (acc, item) => Number(acc) + Number(Number(item!.price) * item.quantity),
       0
     );
 
@@ -111,9 +112,7 @@ const ServiceForm = () => {
       e.target.setCustomValidity("O código de ativação deve conter 8 digitos!");
       return;
     }
-    console.log(satCode.length);
 
-    console.log(field);
     requiredMsg(
       e,
       fiscalPrinter,
@@ -135,6 +134,23 @@ const ServiceForm = () => {
       "extraEquipment",
       "Escolha uma das opções!"
     );
+    requiredMsg(
+      e,
+      authorized,
+      field,
+      "authorized",
+      "Este campo é obrigatório!"
+    );
+
+    if (
+      (authorized == "" && field == "authorized") ||
+      (authorized == "Não" && field == "authorized")
+    ) {
+      e.target.setCustomValidity(
+        "O serviço precisa ser autorizado para ser enviado!"
+      );
+      return;
+    }
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -148,6 +164,7 @@ const ServiceForm = () => {
 
     const tp = {
       ...clientData,
+      authorized: authorized && true,
       company: {
         cnpj,
         company,
@@ -431,6 +448,17 @@ const ServiceForm = () => {
             value={equipments}
             onChange={(e) => setEquipments(e.target.value)}
           />
+
+          <div className="mt-10 flex-col-center">
+            <InputRadio
+              title="VOCÊ AUTORIZA A REALIZAÇÃO DO SERVIÇO FORA DE ESCOPO?"
+              name="authorized"
+              setState={setAuthorized}
+              onInvalid={handleOnInvalid}
+              alert
+              alingAnswerCenter
+            />
+          </div>
         </div>
         <span className="flex justify-center items-center text-sm text-red-600 text-center">
           {error}
