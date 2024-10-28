@@ -153,7 +153,7 @@ const ServiceForm = () => {
     }
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -188,8 +188,19 @@ const ServiceForm = () => {
     };
 
     // TODO - chamada para a api
+    try {
+      await fetch("https://fora-de-escopo-api.onrender.com/tp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tp),
+      });
 
-    console.log(tp);
+      console.log("Dados enviaddos!");
+    } catch (error) {
+      console.log(error);
+    }
 
     router.push("/service/sucess");
   }
