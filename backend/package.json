@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
-    "vercel-build": "echo hello"
+    "vercel-build": "echo hello",
+    "build": "node ./src/index.js"
   },
   "keywords": [],
   "author": "luiz leonel",
