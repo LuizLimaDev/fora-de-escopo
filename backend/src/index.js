@@ -18,7 +18,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "fora-de-escopo.vercel.app",
+    origin: "https://fora-de-escopo.vercel.app",
   })
 );
 app.use(express.json());
