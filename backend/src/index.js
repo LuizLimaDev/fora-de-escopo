@@ -16,11 +16,7 @@ db.once("open", () => {
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://fora-de-escopo.vercel.app",
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 
