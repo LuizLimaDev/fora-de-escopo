@@ -33,7 +33,7 @@ const tpSchema = new mongoose.Schema(
       satCode: { type: Number },
       fiscalPrinter: { type: String, required: true },
       remotePrinter: { type: Boolean, required: true },
-      extraEquipment: [{ type: String }],
+      extraEquipment: { type: String },
     },
     createAt: { type: Date, default: Date.now },
   },
