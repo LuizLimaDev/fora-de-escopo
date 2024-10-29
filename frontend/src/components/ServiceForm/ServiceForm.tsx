@@ -187,20 +187,17 @@ const ServiceForm = () => {
       },
     };
 
-    // TODO - chamada para a api
-    try {
-      await fetch("https://fora-de-escopo-api.onrender.com/tp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(tp),
-      });
+    const res = await fetch("https://fora-de-escopo-api.onrender.com/tp", {
+      method: "POST",
+      body: JSON.stringify(tp),
+    });
 
-      console.log("Dados enviaddos!");
-    } catch (error) {
-      console.log(error);
+    if (!res.ok) {
+      console.log(res);
+      throw new Error("Falha ao cadastrar na API!");
     }
+
+    console.log("Serviço cadastrado com sucesso!");
 
     router.push("/service/sucess");
   }
