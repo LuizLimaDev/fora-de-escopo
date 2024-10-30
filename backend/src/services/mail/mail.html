@@ -738,13 +738,15 @@
 
                                 <li><strong>Razão social: </strong>{{company}}</li>
 
-                                <li><strong>Nome da loka: </strong>{{companyName}}</li>
+                                <li><strong>Nome da loja: </strong>{{companyName}}</li>
 
                                 <li><strong>Endereço: </strong>{{adress}}</li>
 
                                 <li><strong>Email: </strong>{{email}}</li>
 
-                                <li><strong>Telefone: </strong>{{phone}}</li><br>
+                                <li><strong>Telefone: </strong>{{phone}}</li>
+
+                                <li><strong>Data: </strong>{{date}}</li><br>
 
                                 <br><li style="text-align: center;"><strong>{{authorized}}</strong></li><br>
                               </ul>
@@ -785,6 +787,9 @@
                           </tr>
                           <tr>
                             <td align="left" style="padding: 0; margin: 0">
+
+<br><hr><br>
+
                               <table
                                 cellpadding="0"
                                 cellspacing="0"
@@ -807,7 +812,20 @@
                                       "
                                       valign="top"
                                     >
-                                      
+                                      <h3 style="text-transform: uppercase;">configurações da instalação</h3><br>
+
+                                      <ul style="text-align: start; list-style: none; line-height: 2.5rem;">
+                                        <li><strong>A loja utiliza Mobile (POS, celular ou Tablet)? </strong>{{mobile}}</li>
+                                        <li><strong>A loja utiliza Autoatendimento One? </strong>{{aa}}</li>
+                                        <li><strong style="color: #dc2626;">A loja esstá parada? </strong>{{shopClosed}}</li>
+                                        <li><strong>Quantos PDVs a loja possui? </strong>{{numberOfPdv}}</li>
+                                        <li><strong>Qual o número do PDV que será instalado? </strong>{{pdvNumber}}</li>
+                                        <li><strong>Qual é o emissor fisscal? </strong>{{fiscalType}}</li>
+                                        <li><strong>Qual o código de ativação do SAT/MFE? </strong>{{satCode}}</li>
+                                        <li><strong>Qual é a marca e modelo da impressora de Cupom Fiscal? </strong>{{fiscalPrinter}}</li>
+                                        <li><strong>Impressoras remotas? </strong>{{remotePrinter}}</li>
+                                        <li><strong>Existe mais algum equipamento conectado? </strong>{{extraEquipment}}</li>
+                              </ul>
                                     </td>
                                   </tr>
                                 </tbody>
