@@ -2,7 +2,7 @@ import requiredMsg from "@/app/schemas/requiredFormSchema";
 import Input from "@/components/Input/Input";
 import tpContext from "@/context/tpContext";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import servicesPrices from "../../utils/servicesPrices.json";
 import InputRadio from "../InputRadio/InputRadio";
@@ -14,24 +14,28 @@ const ServiceForm = () => {
   const [adress, setAdress] = useState<string>("");
   const [products, setProducts] = useState<
     {
-      name: string;
+      product: string;
       quantity: number;
-      price: string | undefined;
+      price: number | undefined;
     }[]
   >([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [mobile, setMobile] = useState<string>("");
-  const [aa, setAa] = useState<string>("");
-  const [shopClosed, setShopClosed] = useState<string>("");
+  const [mobile, setMobile] = useState<boolean | undefined>(undefined);
+  const [aa, setAa] = useState<boolean | undefined>(undefined);
+  const [shopClosed, setShopClosed] = useState<boolean | undefined>(undefined);
   const [numberOfPdv, setNumberOfPdv] = useState<string>("");
   const [pdvNumber, setPdvNumber] = useState<string>("");
   const [fiscalType, setFiscalType] = useState<string>("");
   const [satCode, setSatCode] = useState<string>("");
   const [fiscalPrinter, setFiscalPrinter] = useState<string>("");
-  const [remotePrinter, setRemotePrinter] = useState<string>("");
-  const [extraEquipment, setExtraEquipment] = useState<string>("");
+  const [remotePrinter, setRemotePrinter] = useState<boolean | undefined>(
+    undefined
+  );
+  const [extraEquipment, setExtraEquipment] = useState<boolean | undefined>(
+    undefined
+  );
   const [equipments, setEquipments] = useState<string>("");
-  const [authorized, setAuthorized] = useState<string>("");
+  const [authorized, setAuthorized] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string>("");
   const router = useRouter();
   const { clientData } = useContext(tpContext);
@@ -44,7 +48,7 @@ const ServiceForm = () => {
     )?.price;
 
     if (!checked) {
-      const currentProduct = products.find((item) => item.name == value);
+      const currentProduct = products.find((item) => item.product == value);
 
       if (currentProduct!.quantity > 0) {
         setTotalPrice(
@@ -53,15 +57,17 @@ const ServiceForm = () => {
         );
       }
 
-      setProducts((prev) => prev.filter((product) => product.name !== value));
+      setProducts((prev) =>
+        prev.filter((product) => product.product !== value)
+      );
 
       return;
     }
 
     const updateProduct = {
-      name: value,
+      product: value,
       quantity: 0,
-      price,
+      price: Number(price),
     };
 
     setProducts((prev) => [...prev, updateProduct]);
@@ -70,7 +76,7 @@ const ServiceForm = () => {
   function handleQuantityChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     const product = e.target.name;
-    const currentProduct = products.find((item) => item.name === product);
+    const currentProduct = products.find((item) => item.product === product);
 
     currentProduct!.quantity = Number(value);
 
@@ -143,8 +149,8 @@ const ServiceForm = () => {
     );
 
     if (
-      (authorized == "" && field == "authorized") ||
-      (authorized == "Não" && field == "authorized")
+      (authorized == undefined && field == "authorized") ||
+      (authorized == false && field == "authorized")
     ) {
       e.target.setCustomValidity(
         "O serviço precisa ser autorizado para ser enviado!"
@@ -171,24 +177,27 @@ const ServiceForm = () => {
         companyName,
         adress,
       },
-      service: [...products],
+      services: [...products],
       totalPrice,
       config: {
         mobile,
         aa,
         shopClosed,
-        numberOfPdv,
-        pdvNumber,
+        numberOfPdv: Number(numberOfPdv),
+        pdvNumber: Number(pdvNumber),
         fiscalType,
         satCode,
         fiscalPrinter,
         remotePrinter,
-        extraEquipment,
+        extraEquipment: equipments,
       },
     };
 
     const res = await fetch("https://fora-de-escopo-api.onrender.com/tp", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(tp),
     });
 
@@ -197,10 +206,17 @@ const ServiceForm = () => {
       throw new Error("Falha ao cadastrar na API!");
     }
 
-    console.log("Serviço cadastrado com sucesso!");
+    console.log("Serviço cadastrado com sucesso!", tp);
 
     router.push("/service/sucess");
   }
+
+  useEffect(() => {
+    if (authorized)
+      alert(
+        "Todos os periféricos informados devem estar instalados e comunicando com o Windows!"
+      );
+  }, [authorized]);
 
   return (
     <form onSubmit={handleSubmit} className="w-full xl:w-[52.375rem]">
@@ -271,8 +287,10 @@ const ServiceForm = () => {
               <tr>
                 <th
                   scope="col"
-                  className="py-3 text-sm font-medium text-linx-dark-gray captalize"
-                ></th>
+                  className="py-3 text-sm font-medium text-linx-dark-gray captalize text-start"
+                >
+                  Produto
+                </th>
                 <th
                   scope="col"
                   className="py-3 text-sm font-medium text-linx-dark-gray captalize"
@@ -304,8 +322,9 @@ const ServiceForm = () => {
                     <label htmlFor={String(index)}>{item.name}</label>
                   </td>
                   <td className="text-center">
-                    {products.find((product) => product.name == item.name) !==
-                    undefined ? (
+                    {products.find(
+                      (product) => product.product == item.name
+                    ) !== undefined ? (
                       <input
                         type="number"
                         name={item.name}
@@ -411,16 +430,7 @@ const ServiceForm = () => {
               </div>
             </div>
           </div>
-          <Input
-            title="Qual é a marca e modelo da impressora de Cupom Fiscal?"
-            type="text"
-            name="fiscalPrinter"
-            placeholder=""
-            value={fiscalPrinter}
-            onChange={(e) => setFiscalPrinter(e.target.value)}
-            onInvalid={handleOnInvalid}
-            required
-          />
+
           {fiscalType == "SAT/MFE" && (
             <Input
               title="*Qual o código de ativação do SAT/MFE"
@@ -436,6 +446,17 @@ const ServiceForm = () => {
             />
           )}
 
+          <Input
+            title="Qual é a marca e modelo da impressora de Cupom Fiscal?"
+            type="text"
+            name="fiscalPrinter"
+            placeholder=""
+            value={fiscalPrinter}
+            onChange={(e) => setFiscalPrinter(e.target.value)}
+            onInvalid={handleOnInvalid}
+            required
+          />
+
           <InputRadio
             title="7- Impressoras remotas?"
             name="remotePrinter"
@@ -449,15 +470,34 @@ const ServiceForm = () => {
             onInvalid={handleOnInvalid}
           />
 
-          <Input
-            title="Quais equipamentos"
-            type="text"
-            placeholder="Balança, Pinpad, KDS, etc..."
-            value={equipments}
-            onChange={(e) => setEquipments(e.target.value)}
-          />
+          {extraEquipment && (
+            <Input
+              title="Quais equipamentos"
+              type="text"
+              placeholder="Balança, Pinpad, KDS, etc..."
+              value={equipments}
+              onChange={(e) => setEquipments(e.target.value)}
+            />
+          )}
 
           <div className="mt-10 flex-col-center">
+            <p className="mb-10 indent-4 text-justify">
+              Prezado cliente, com base no catálogo de Serviços fora do escopo
+              padrão de Suporte, informamos que{" "}
+              <strong className="text-red-600">
+                será cobrada a taxa pelo serviço{" "}
+              </strong>
+              citado e escolhido acima.
+              <strong className="text-red-600">
+                {" "}
+                A taxa será faturada no próximo fechamento do período{" "}
+              </strong>
+              e será enviado um boleto separado. Estando de acordo, por
+              gentileza autorize o serviço para que o e-mail seja enviado ao
+              Suporte, e que possamos dar continuidade ao processo de
+              agendamento do procedimento.
+            </p>
+
             <InputRadio
               title="VOCÊ AUTORIZA A REALIZAÇÃO DO SERVIÇO FORA DE ESCOPO?"
               name="authorized"

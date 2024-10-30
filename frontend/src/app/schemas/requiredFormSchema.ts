@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 
 export default function requiredMsg(
   e: ChangeEvent<HTMLInputElement>,
-  state: string,
+  state: string | boolean | undefined,
   field: string,
   fieldName: string,
   message: string

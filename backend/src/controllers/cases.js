@@ -57,7 +57,7 @@ const postTp = async (req, res) => {
       company: newTp.company.company,
       companyName: newTp.company.companyName,
       adress: newTp.company.adress,
-      mail: newTp.mail,
+      email: newTp.email,
       phone: newTp.phone,
       services: newTp.services,
       totalPrice: newTp.totalPrice,
@@ -68,7 +68,7 @@ const postTp = async (req, res) => {
     transport.sendMail({
       from: `Luiz Lima <devluizlima@gmail.com>`,
       to: `${newTp.name} <${newTp.email}>`,
-      subject: `FORA DE ESCOPO - Linx Degust caso ${newTp.company.companyName}`,
+      subject: `FORA DE ESCOPO - ${newTp.company.companyName} - CNPJ ${newTp.company.cnpj}`,
       html,
     });
 

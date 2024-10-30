@@ -4,7 +4,7 @@ interface Iprops {
   title: string;
   name: string;
   alert?: boolean;
-  setState: Dispatch<SetStateAction<string>>;
+  setState: Dispatch<SetStateAction<boolean | undefined>>;
   onInvalid: FormEventHandler<HTMLInputElement> | undefined;
   alingAnswerCenter?: boolean;
 }
@@ -31,7 +31,7 @@ const InputRadio = ({
             id="Sim"
             name={name}
             value="Sim"
-            onChange={(e) => setState(e.target.value)}
+            onChange={() => setState(true)}
             className="text-linx-dark-gray self-start mr-1"
             required
             onInvalid={onInvalid}
@@ -45,7 +45,7 @@ const InputRadio = ({
             id="Não"
             name={name}
             value="Não"
-            onChange={(e) => setState(e.target.value)}
+            onChange={() => setState(false)}
             className="text-linx-dark-gray self-start mr-1"
           />
           <label htmlFor="Não">Não</label>
