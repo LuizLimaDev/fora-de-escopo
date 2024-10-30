@@ -30,7 +30,7 @@ const tpSchema = new mongoose.Schema(
       numberOfPdv: { type: Number, required: true },
       pdvNumber: { type: Number },
       fiscalType: { type: String, required: true },
-      satCode: { type: Number },
+      satCode: { type: String },
       fiscalPrinter: { type: String, required: true },
       remotePrinter: { type: Boolean, required: true },
       extraEquipment: { type: String },
