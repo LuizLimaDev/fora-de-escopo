@@ -49,6 +49,13 @@ const postTp = async (req, res) => {
 
     await tp.create(newTp);
 
+    const now = Date.now();
+    const currentDate = new Date(now);
+    const localDate = currentDate.toLocaleString("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+    });
+    const onlyLocalDate = localDate.split(",")[0];
+
     const html = await htmlCompiler("./src/services/mail/mail.html", {
       name: newTp.name,
       cpf: newTp.cpf,
@@ -59,16 +66,28 @@ const postTp = async (req, res) => {
       adress: newTp.company.adress,
       email: newTp.email,
       phone: newTp.phone,
+      date: localDate,
       services: newTp.services,
       totalPrice: newTp.totalPrice,
       authorized: newTp.authorized && "EU AUTORIZO O SERVIÇO!",
-      //TODO - como inserir todos os serviços do array de objetos nesta tag?
+      mobile: newTp.config.mobile ? "Sim" : "Não",
+      aa: newTp.config.aa ? "Sim" : "Não",
+      shopClosed: newTp.config.shopClosed ? "Sim" : "Não",
+      numberOfPdv: newTp.config.numberOfPdv,
+      pdvNumber: newTp.config.pdvNumber,
+      fiscalType: newTp.config.fiscalType,
+      satCode: newTp.config.satCode ? newTp.config.satCode : "-",
+      fiscalPrinter: newTp.config.fiscalPrinter,
+      remotePrinter: newTp.config.remotePrinter ? "Sim" : "Não",
+      extraEquipment: newTp.config.extraEquipment
+        ? newTp.config.extraEquipment
+        : "-",
     });
 
     transport.sendMail({
-      from: `Luiz Lima <devluizlima@gmail.com>`,
-      to: `${newTp.name} <${newTp.email}>`,
-      subject: `FORA DE ESCOPO - ${newTp.company.companyName} - CNPJ ${newTp.company.cnpj}`,
+      from: `${newTp.name} <${newTp.email}>`,
+      to: `Luiz Lima <devluizlima@gmail.com>`,
+      subject: `FORA DE ESCOPO - ${newTp.company.companyName} - CNPJ ${newTp.company.cnpj} - ${onlyLocalDate}`,
       html,
     });
 
