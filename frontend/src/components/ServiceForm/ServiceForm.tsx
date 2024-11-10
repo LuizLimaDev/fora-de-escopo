@@ -204,8 +204,8 @@ const ServiceForm = () => {
 
     console.log("Serviço cadastrado com sucesso!", tp);
 
-    setIsLoading(false);
     router.push("/service/sucess");
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -510,7 +510,11 @@ const ServiceForm = () => {
         </span>
 
         <button
-          className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3"
+          className={`
+            w-full font-dosis font-bold text-linx-white text-xl  rounded-3xl mt-10 py-3 ${
+              isLoading ? "bg-linx-dark-gray" : "bg-linx-orange"
+            }
+            `}
           disabled={isLoading}
         >
           Registrar chamado
