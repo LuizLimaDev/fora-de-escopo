@@ -37,6 +37,7 @@ const ServiceForm = () => {
   const [equipments, setEquipments] = useState<string>("");
   const [authorized, setAuthorized] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const { clientData } = useContext(tpContext);
 
@@ -113,12 +114,7 @@ const ServiceForm = () => {
       "numberOfPdv",
       "Este campo é obrigatório!"
     );
-
-    if (satCode.length < 8 && field == "satCode") {
-      e.target.setCustomValidity("O código de ativação deve conter 8 digitos!");
-      return;
-    }
-
+    requiredMsg(e, satCode, field, "satCode", "Este campo é obrigatório!");
     requiredMsg(
       e,
       fiscalPrinter,
@@ -147,16 +143,6 @@ const ServiceForm = () => {
       "authorized",
       "Este campo é obrigatório!"
     );
-
-    if (
-      (authorized == undefined && field == "authorized") ||
-      (authorized == false && field == "authorized")
-    ) {
-      e.target.setCustomValidity(
-        "O serviço precisa ser autorizado para ser enviado!"
-      );
-      return;
-    }
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -165,6 +151,14 @@ const ServiceForm = () => {
 
     if (products.length == 0 || products[0].quantity == 0) {
       setError("É necessário selecionar ao menos um produto e a quantidade!");
+      return;
+    }
+    if (fiscalType === "SAT/MFE" && satCode.length < 8) {
+      setError("O código de ativação deve conter 8 digitos!");
+      return;
+    }
+    if (authorized == undefined || authorized == false) {
+      setError("O serviço precisa ser autorizado para ser enviado!");
       return;
     }
 
@@ -193,6 +187,7 @@ const ServiceForm = () => {
       },
     };
 
+    setIsLoading(true);
     const res = await fetch("https://fora-de-escopo-api.onrender.com/tp", {
       method: "POST",
       headers: {
@@ -203,11 +198,13 @@ const ServiceForm = () => {
 
     if (!res.ok) {
       console.log(res);
+      setIsLoading(false);
       throw new Error("Falha ao cadastrar na API!");
     }
 
     console.log("Serviço cadastrado com sucesso!", tp);
 
+    setIsLoading(false);
     router.push("/service/sucess");
   }
 
@@ -410,11 +407,11 @@ const ServiceForm = () => {
                   type="radio"
                   id="SAT/MFE"
                   name="fiscalType"
-                  value="satMfe"
+                  value="SAT/MFE"
                   onChange={(e) => setFiscalType(e.target.id)}
                   className="text-linx-dark-gray self-start mr-1"
                 />
-                <label htmlFor="satMfe">SAT/MFE</label>
+                <label htmlFor="SAT/MFE">SAT/MFE</label>
               </div>
 
               <div className="font-sans">
@@ -512,7 +509,10 @@ const ServiceForm = () => {
           {error}
         </span>
 
-        <button className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3">
+        <button
+          className="w-full font-dosis font-bold text-linx-white text-xl bg-linx-orange rounded-3xl mt-10 py-3"
+          disabled={isLoading}
+        >
           Registrar chamado
         </button>
       </div>
