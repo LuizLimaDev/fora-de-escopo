@@ -3,12 +3,6 @@ import IconTextDescription from "@/components/IconTextDescription/IconTextDescri
 import Image from "next/image";
 
 export default async function HomePage() {
-
-//api awake
-const res = await fetch("https://fora-de-escopo-api.onrender.com/tp")
-if (!res.ok) return console.log(res)
-console.log('API awaked!')
-
   return (
     <main>
       <div className="w-screen h-screen xl:flex xxl:justify-center xxl:items-center xl:gap-[4.1875rem] xl:p-10 p-3">
