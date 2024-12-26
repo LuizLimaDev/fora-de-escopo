@@ -5,7 +5,7 @@ import routes from "./routes/routes.js";
 import apiAwake from "./services/apiAwake.js";
 import dbConnection from "./services/dbConnection.js";
 
-setInterval(apiAwake, 297000);
+//setInterval(apiAwake, 297000);
 
 const db = await dbConnection();
 
